@@ -1,0 +1,103 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="rwm_ecommerce.master.cs" Inherits="rwm_ecommerce" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />	
+	<title>Responsive Web Mobile - Ecommerce</title>
+
+	<!-- Included Bootstrap CSS Files -->
+	<link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="./js/bootstrap/css/bootstrap-responsive.min.css" />
+	
+	<!-- Includes FontAwesome -->
+	<link rel="stylesheet" href="./css/font-awesome/css/font-awesome.min.css" />
+
+	<!-- Css -->	
+	<link rel="stylesheet" href="./css/style.css" />
+
+	<asp:ContentPlaceHolder id="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse" type="button">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="brand" href="/CIS 451	">CIS 451 E-Commerce Website</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li><a href="/CIS 451">Home</a></li>
+						<asp:SqlDataSource ID="CategoriesDS" runat="server" 
+							ConnectionString="<%$ ConnectionStrings:connString %>" 
+							SelectCommand="SELECT * FROM [categories] WHERE [parent_id] = 0"></asp:SqlDataSource>
+							<asp:Repeater runat="server" id="navigation" DataSourceID="CategoriesDS">
+								<ItemTemplate>
+									<li><a href="?category=<%# Eval("category_id") %>"><%# Eval("category_name") %></a></li>
+								</ItemTemplate>
+							</asp:Repeater>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<asp:ContentPlaceHolder id="default" runat="server"></asp:ContentPlaceHolder>
+
+	<hr />
+
+	<!-- <footer id="footer" class="vspace20">
+		<div class="container">
+			<div class="row">
+				<div class="span4">
+					<h4>Info</h4>
+					<ul class="nav nav-stacked">
+						<li><a href="#">Sell Conditions</a>
+						<li><a href="#">Shipping Costs</a>
+						<li><a href="#">Shipping Conditions</a>
+						<li><a href="#">Returns</a>
+						<li><a href="#">About Us</a>
+					</ul>
+				</div> 
+
+				<div class="span4">
+					<h4>Location and Contacts</h4>
+					<p><i class="icon-map-marker"></i>&nbsp;I do not Know Avenue, A City</p>
+					<p><i class="icon-phone"></i>&nbsp;Phone: 234 739.126.72</p>
+					<p><i class="icon-print"></i>&nbsp;Fax: 213 123.12.090</p>
+					<p><i class="icon-envelope"></i>&nbsp;Email: info@mydomain.com</p>
+					<p><i class="icon-globe"></i>&nbsp;Web: http://www.mydomain.com</p>
+				</div>
+
+				<div class="span4">
+					<h4>Newsletter</h4>
+					<p>Write you email to subscribe to our Newsletter service. Thanks!</p>
+					<form class="form-newsletter">
+						<div class="input-append">
+							<input type="email" class="span2" placeholder="your email">
+							<button type="submit" class="btn">Subscribe</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span6">
+					<p>&copy; Copyright 2012.&nbsp;<a href="#">Privacy</a>&nbsp;&amp;&nbsp;<a href="#">Terms and Conditions</a></p>
+				</div>
+				<div class="span6">
+					<a class="pull-right" href="http://www.responsivewebmobile.com" target="_blank">credits by Responsive Web Mobile</a>
+				</div>
+			</div>
+		</div>
+	</footer> -->
+
+	<script src="./js/jquery-1.10.0.min.js"></script>
+	<script src="./js/bootstrap/js/bootstrap.min.js"></script>
+	<script src="./js/holder.js"></script>
+	<script src="./js/script.js"></script>
+</body>
+</html>
