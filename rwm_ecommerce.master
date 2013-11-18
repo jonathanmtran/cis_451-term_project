@@ -36,9 +36,10 @@
 							SelectCommand="SELECT * FROM [categories] WHERE [parent_id] = 0"></asp:SqlDataSource>
 							<asp:Repeater runat="server" id="navigation" DataSourceID="CategoriesDS">
 								<ItemTemplate>
-									<li><a href="?category=<%# Eval("category_id") %>"><%# Eval("category_name") %></a></li>
+									<li><a href="default.aspx?category=<%# Eval("category_id") %>"><%# Eval("category_name") %></a></li>
 								</ItemTemplate>
 							</asp:Repeater>
+							<li><a href="cart.aspx">My Cart</a></li>
 					</ul>
 				</div>
 			</div>

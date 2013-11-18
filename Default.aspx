@@ -85,7 +85,6 @@
 									<h4><%# Eval("product_name") %></h4>
 									<p><%# Eval("price") %></p>
 									<a class="btn btn-primary" href="./?product=<%# Eval("product_id") %>">View</a>
-									<a class="btn btn-success" href="./cart.aspx?action=add&product=<%# Eval("product_id") %>">Add to Cart</a>
 								</div>
 							</div>
 						</li>						
@@ -122,7 +121,8 @@
 						<p>Sustainable squid try-hard, tousled pug freegan dolore pariatur nihil raw denim readymade whatever yr pop-up enim. Velit veniam McSweeney's whatever, next level street art brunch. Nesciunt delectus pork belly synth veniam. Velit brunch Terry Richardson anim. Occaecat butcher tousled 90's stumptown. Vinyl four loko semiotics readymade duis. Etsy Portland kitsch nihil ethical.</p>
 						<h4>$<%# Eval("price").ToString().Trim() %></h4>
 
-						<form>
+						<form action="cart.aspx?action=add" method="post">
+							<input type="hidden" name="product_id" value="<%# Eval("product_id").ToString().Trim() %>" />
 							<label>
 								<input type="text" id="quantity" name="quantity" value="1" class="span1" />&nbsp;Qty
 							</label>
