@@ -69,7 +69,7 @@ public class Cart : Page
 		{
 			this.conn.Close();
 
-			cmd = new SqlCommand("SELECT SUM(price * qty) FROM [shopping_cart_items], [products] WHERE cart_id = @cart_id", this.conn);
+			cmd = new SqlCommand("SELECT SUM(price * qty) FROM [shopping_cart_items], [products] WHERE [shopping_cart_items].product_id = [products].product_id AND cart_id = @cart_id", this.conn);
 			cmd.Parameters.AddWithValue("@cart_id", this.Get_Cart());
 
 			this.conn.Open();
