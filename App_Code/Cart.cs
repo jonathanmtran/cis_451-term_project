@@ -85,7 +85,7 @@ public class Cart : Page
 	public double Calculate_Tax(String state)
 	{
 		double tax = 0.0;
-		double rate = 1;
+		double rate = 0.0;
 
 		if(state == "CA")
 			rate = 8.75;
