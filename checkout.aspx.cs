@@ -26,7 +26,7 @@ public partial class checkout : System.Web.UI.Page
 		{
 			if(ddl_state.SelectedValue.Equals("CA")) 
 			{
-				tax = this.ShoppingCart.Calculate_Subtotal() * (8.75 / 100);
+				tax = this.ShoppingCart.Calculate_Tax(ddl_state.SelectedValue.Trim());
 				dd_tax.InnerText = "$" + tax.ToString("#.##");
 			}
 			else
@@ -101,11 +101,7 @@ public partial class checkout : System.Web.UI.Page
 		conn.Close();
 
 		double subtotal = this.ShoppingCart.Calculate_Subtotal();
-		double tax = 0.0;
-
-		if(state == "CA")
-			tax = subtotal * (8.75 / 100);
-
+		double tax = this.ShoppingCart.Calculate_Tax(state);
 		double total = subtotal + tax;
 
 		// By default, this sample code is designed to post to our test server for
@@ -249,9 +245,7 @@ public partial class checkout : System.Web.UI.Page
 
 		emailBody += "<strong>Subtotal</strong>: $" + Convert.ToDecimal(this.ShoppingCart.Calculate_Subtotal()).ToString("#,##0.00") + "<br />";
 		
-		double tax = 0.0;
-		if(state == "CA")
-			tax = this.ShoppingCart.Calculate_Subtotal() * (8.75 / 100);
+		double tax = this.ShoppingCart.Calculate_Tax(state);
 
 		emailBody += "<strong>Tax</strong>: $" + Convert.ToDecimal(tax).ToString("#,##0.00") + "<br />";
 		emailBody += "<strong>Total</strong>: $" + Convert.ToDecimal(this.ShoppingCart.Calculate_Subtotal() + tax).ToString("#,##0.00") + "<br /><br />";

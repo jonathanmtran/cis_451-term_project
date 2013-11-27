@@ -130,7 +130,7 @@ public partial class cart : System.Web.UI.Page
 		int cart_id = this.ShoppingCart.Get_Cart();
 		int result = 0;
 
-		if(qty <1)
+		if(qty < 1)
 			return this.Delete(product_id);
 
 		SqlCommand cmd = new SqlCommand("SELECT * FROM [shopping_cart_items] WHERE cart_id = " + cart_id + " AND product_id = " + product_id, this.conn);
