@@ -20,7 +20,7 @@ public partial class checkout : System.Web.UI.Page
 		double tax = 0.0;
 
 		SqlDataSource1.SelectParameters["cart_id"].DefaultValue = this.ShoppingCart.Get_Cart().ToString();
-		sub_total.InnerText = "$" + this.ShoppingCart.Calculate_Subtotal();
+		sub_total.InnerText = "$" + Convert.ToDecimal(this.ShoppingCart.Calculate_Subtotal().ToString()).ToString("#,##0.00");
 		
 		if(IsPostBack)
 		{
@@ -32,7 +32,8 @@ public partial class checkout : System.Web.UI.Page
 			else
 				dd_tax.InnerText = "$0.00";
 		}
-		total.InnerText = "$" + (this.ShoppingCart.Calculate_Subtotal() + tax).ToString("#.##");
+
+		total.InnerText = "$" + Convert.ToDecimal((this.ShoppingCart.Calculate_Subtotal() + tax).ToString("#.##")).ToString("#,##0.00");
     }
 
 	protected void confirm_Click(object sender, EventArgs e)

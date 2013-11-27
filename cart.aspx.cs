@@ -58,8 +58,8 @@ public partial class cart : System.Web.UI.Page
 		}
 		
 		SqlDataSource1.SelectParameters["cart_id"].DefaultValue = ShoppingCart.Get_Cart().ToString();
-		sub_total.InnerText = "$" + this.ShoppingCart.Calculate_Subtotal();
-		total.InnerText = "$" + this.ShoppingCart.Calculate_Subtotal();
+		sub_total.InnerText = "$" + Convert.ToDecimal(this.ShoppingCart.Calculate_Subtotal().ToString()).ToString("#,##0.00");
+		total.InnerText = "$" + Convert.ToDecimal(this.ShoppingCart.Calculate_Subtotal().ToString()).ToString("#,##0.00");
     }
 
 	protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
