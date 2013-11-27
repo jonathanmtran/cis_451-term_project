@@ -10,14 +10,13 @@
 
 	<asp:SqlDataSource ID="SqlDataSource1" runat="server" 
 		ConnectionString="<%$ ConnectionStrings:connString %>" 
-		
 		SelectCommand="SELECT [products].product_id, product_code, product_name, qty, price, qty * price AS total FROM [shopping_cart_items], [products] WHERE cart_id = @cart_id AND [products].product_id = [shopping_cart_items].product_id">
 		<SelectParameters>
 			<asp:Parameter Name="cart_id" Type="String" />
 		</SelectParameters>
-	</asp:SqlDataSource>	
+	</asp:SqlDataSource>
 	
-	<form runat="server">
+	<form runat="server" class="table table-striped table-hover">
 	<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
 		DataSourceID="SqlDataSource1" EnableModelValidation="True" 
 		CssClass="table table-striped table-hover" OnRowCommand="GridView1_RowCommand" DataKeyNames="product_id">
@@ -51,15 +50,12 @@
 		<dl class="dl-horizontal pull-right">
 			<dt>Sub-total:</dt>
 			<dd id="sub_total" runat="server">$</dd>
-				
-			<dt>Shipping Cost:</dt>
-			<dd>FREE</dd>
 
 			<dt>Total:</dt>
 			<dd id="total" runat="server">$</dd>
 		</dl>
 		<div class="clearfix"></div>
-		<a href="#" class="btn btn-success pull-right">Checkout</a>
+		<a href="checkout.aspx" class="btn btn-success pull-right">Checkout</a>
 		<a href="default.aspx" class="btn btn-primary">Continue Shopping</a>
 		<a href="cart.aspx?action=empty" class="btn btn-danger">Empty Cart</a>
 	</form>

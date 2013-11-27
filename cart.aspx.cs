@@ -8,11 +8,13 @@ using System.Web.UI.WebControls;
 
 public partial class cart : System.Web.UI.Page
 {
+	private Cart ShoppingCart;
 	private String connString = ConfigurationManager.ConnectionStrings["connString"].ToString();
 	private SqlConnection conn;
 
     protected void Page_Load(object sender, EventArgs e)
     {
+		this.ShoppingCart = new Cart();
 		this.conn = new SqlConnection(this.connString);
 
 		string action = "";
@@ -55,9 +57,9 @@ public partial class cart : System.Web.UI.Page
 			Response.Redirect("cart.aspx");
 		}
 		
-		SqlDataSource1.SelectParameters["cart_id"].DefaultValue = this.Get_Cart().ToString();
-		sub_total.InnerText = "$" + this.Calculate_Subtotal();
-		total.InnerText = "$" + this.Calculate_Subtotal();
+		SqlDataSource1.SelectParameters["cart_id"].DefaultValue = ShoppingCart.Get_Cart().ToString();
+		sub_total.InnerText = "$" + this.ShoppingCart.Calculate_Subtotal();
+		total.InnerText = "$" + this.ShoppingCart.Calculate_Subtotal();
     }
 
 	protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -89,7 +91,7 @@ public partial class cart : System.Web.UI.Page
 
 	protected Boolean Add(int product_id, int qty) 
 	{
-		int cart_id = this.Get_Cart();
+		int cart_id = this.ShoppingCart.Get_Cart();
 
 		SqlCommand cmd = new SqlCommand("SELECT * FROM [shopping_cart_items] WHERE cart_id = " + cart_id + " AND product_id = " + product_id, this.conn);
 		this.conn.Open();
@@ -125,7 +127,7 @@ public partial class cart : System.Web.UI.Page
 
 	protected Boolean Update(int product_id, int qty)
 	{
-		int cart_id = this.Get_Cart();
+		int cart_id = this.ShoppingCart.Get_Cart();
 		int result = 0;
 
 		if(qty <1)
@@ -155,7 +157,7 @@ public partial class cart : System.Web.UI.Page
 	protected Boolean Delete(int product_id)
 	{
 		SqlCommand cmd = new SqlCommand("DELETE FROM [shopping_cart_items] WHERE cart_id = @cart_id AND product_id = @product_id", this.conn);
-		cmd.Parameters.AddWithValue("@cart_id", this.Get_Cart());
+		cmd.Parameters.AddWithValue("@cart_id", this.ShoppingCart.Get_Cart());
 		cmd.Parameters.AddWithValue("@product_id", product_id);
 
 		this.conn.Open();
@@ -170,72 +172,12 @@ public partial class cart : System.Web.UI.Page
 	protected void Empty_Cart()
 	{
 		SqlCommand cmd = new SqlCommand("DELETE FROM [shopping_cart_items] WHERE cart_id = @cart_id", this.conn);
-		cmd.Parameters.AddWithValue("@cart_id", this.Get_Cart());
+		cmd.Parameters.AddWithValue("@cart_id", this.ShoppingCart.Get_Cart());
 
 		this.conn.Open();
 
 		cmd.ExecuteNonQuery();
 
 		this.conn.Close();
-	}
-
-	protected int Get_Cart() 
-	{
-		if (Session.IsNewSession)
-			Session["cart_id"] = Session.SessionID;
-
-		String session_id = (String)Session["cart_id"];
-		int cart_id = 0;
-
-		SqlCommand cmd = new SqlCommand("SELECT * FROM [shopping_carts] WHERE session_id = @session_id", this.conn);
-		cmd.Parameters.AddWithValue("@session_id", session_id);
-		this.conn.Open();
-
-		SqlDataReader reader = cmd.ExecuteReader();
-		if (reader.HasRows)
-		{
-			reader.Read();
-			cart_id = (Int32)reader["cart_id"];
-		}
-		else
-		{
-			this.conn.Close();
-			cmd.Parameters.Clear();
-
-			cmd = new SqlCommand("INSERT INTO [shopping_carts] (session_id) VALUES(@session_id); SELECT Scope_Identity();", this.conn);
-			cmd.Parameters.AddWithValue("@session_id", session_id);
-			this.conn.Open();
-
-			cart_id = int.Parse(cmd.ExecuteScalar().ToString());
-		}
-
-		this.conn.Close();
-
-		return cart_id;
-	}
-
-	protected double Calculate_Subtotal()
-	{
-		double subtotal = 0.0;
-
-		SqlCommand cmd = new SqlCommand("SELECT COUNT(product_id) FROM [shopping_cart_items] WHERE cart_id = @cart_id", this.conn);
-		cmd.Parameters.AddWithValue("@cart_id", this.Get_Cart());
-		this.conn.Open();
-
-		if(int.Parse(cmd.ExecuteScalar().ToString()) >  0)
-		{
-			this.conn.Close();
-
-			cmd = new SqlCommand("SELECT SUM(price * qty) FROM [shopping_cart_items], [products] WHERE cart_id = @cart_id", this.conn);
-			cmd.Parameters.AddWithValue("@cart_id", this.Get_Cart());
-
-			this.conn.Open();
-
-			subtotal = double.Parse(cmd.ExecuteScalar().ToString());
-		}
-
-		this.conn.Close();
-
-		return subtotal;
 	}
 }
