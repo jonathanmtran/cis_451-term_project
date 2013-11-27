@@ -1,3 +1,4 @@
 .DS_Store
+Web.config
 App_Data/database.mdf
 App_Data/database_log.LDF
